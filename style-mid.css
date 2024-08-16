@@ -1,0 +1,31 @@
+.sidebar.close{
+    width: 88px;
+}
+
+.sidebar.close .text{
+    opacity: 0;
+}
+
+.sidebar.close+.home {
+    left: 88px;
+    height: 100vh;
+    /* 为什么还要加height */
+    width: calc(100% - 88px);
+}
+
+.sidebar.close .logo-text {
+    visibility: hidden;
+    /* 不设置的话.logo-text里的东西会挡在.sidebar-toggle的前面，
+    鼠标很难点到.sidebar-toggle */
+    /* 设置dispaly:none的话会改变原来.sidebar header的布局 */
+}
+
+.sidebar.close+.home .sidebar-toggle {
+    transform: rotate(0deg);
+}
+
+.row .col.close{
+    width: 33.3333%;
+} 
+/* 要怎么实现？？？？又变成三分之一而不大改html的代码 */
+/* 配合.row的 flex-wrap: wrap; -- 允许换行  就可以三分之一宽度了  */
