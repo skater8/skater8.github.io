@@ -1,0 +1,841 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --body-color: #e4e9f7;
+    --sidebar-color: #fff;
+    --primary-color: #695cfe;
+    --primary-color-light: #f6f5ff;
+    --toggle-color: #ddd;
+    --text-color: #707070;
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--body-color);
+    transition: var(--tran-03);
+}
+
+body.dark {
+    --body-color: #18191a;
+    --sidebar-color: #242526;
+    --primary-color: #3a3b3c;
+    --primary-color-light: #3a3b3c;
+    --toggle-color: #fff;
+    --text-color: #ccc;
+}
+
+/* 有定义的颜色会随body.dark属性的拥有自动变成body.dark里对应的相同颜色，
+除一些本来颜色对应的颜色名称需要变的要另外再改颜色名，
+其他不需要改颜色名的会自动随模式的切换换颜色，不需要再写这部分色颜色变换 */
+
+::selection {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.sidebar {
+    /* position: absolute; */
+    /* 不加绝对定位，高度达不到全屏高，sidebar的位置是相对于html根元素的 */
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    padding: 10px 14px;
+    background: var(--sidebar-color);
+    transition: var(--tran-03);
+    /* z-index: 10; */
+    /* toggle才能显示出来而不会被右边的.home遮挡--源代码需要 */
+    position: fixed;
+    /* 侧边栏固定定位 */
+}
+
+.sidebar li {
+    list-style: none;
+    height: 50px;
+    /* 每行设置一下高度，方便后面100%高度设置 */
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 这两个一块设置是因为当.sidebar.close时，只剩.image和.icon会显示，文字不显示 */
+.sidebar header .image,
+.sidebar .icon {
+    min-width: 60px;
+    /* 设置最小宽度 */
+    border-radius: 6px;
+}
+
+.sidebar .icon {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.sidebar .text,
+.sidebar .icon {
+    color: var(--text-color);
+    transition: var(--tran-03);
+    /* ？ */
+}
+
+.sidebar .text {
+    font-size: 17px;
+    font-weight: 500;
+    white-space: nowrap;
+    /* ？ */
+    opacity: 1;
+}
+
+
+.sidebar header {
+    position: relative;
+    /* z-index: 100; */
+    /* 设置这个z-idex是用来源码的toggle是一半在.sidebar内一半突出到.home的范围内的
+    因为.sidebar的宽度没包含toggle突出去的位置，
+    所以光在.sidebar里定义z-index还是会导致toggle的右半边背.home覆盖遮挡，
+    z-index属性是非继承性的 */
+    /* 但设置在header上就能生效应该是因为，原本toggle是header的直接子元素，位置用绝对定位定在header的右侧
+    也撑开了header的宽度到toggle的位置，所以能生效 */
+    /* 上面只是我的解释，不知道对不对 */
+}
+
+.sidebar header .image-text {
+    display: flex;
+    /* 让.image-text下的项目垂直居中 */
+    align-items: center;
+}
+
+.sidebar header .image {
+    display: flex;
+    /* 为什么这里还要flex——让.image里的flex项目（这里只有一个，也就是img图片）竖直水平居中 */
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar header .image img {
+    width: 40px;
+    border-radius: 6px;
+}
+
+.sidebar header .logo-text {
+    display: flex;
+    /* 让.logo-text的两个span文字竖直排列 */
+    flex-direction: column;
+}
+
+.sidebar header .logo-text .name {
+    margin-top: 2px;
+    /* 只是调个位置，不写也可以 */
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.sidebar header .logo-text .profession {
+    font-size: 16px;
+    margin-top: -2px;
+    /* -2px 让两行文字更靠近 只是调个位置，不写也可以 */
+
+    /* display: block;  可以不设置把span行内元素变为块级元素 */
+    /* 让.profession设置为块级元素 和 .logo-text用flex布局实现纵向排列只设置一个就行 */
+    /* 为了让第二个span文字换行，但.logo-text的flex-direction: column;也能实现纵向换行排列 */
+}
+
+.sidebar .language-menu-toggle {
+    display: none;
+}
+
+.sidebar .menu-wrapper {
+    height: calc(100% - 55px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+}
+
+.menu-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar .menu {
+    margin-top: 40px;
+}
+
+.sidebar .search-box {
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    cursor: pointer;
+    transition: var(--tran-03);
+}
+
+.sidebar .search-box input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: var(--tran-03);
+}
+
+li a {
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    /* 每个栏的圆边 */
+    text-decoration: none;
+    /* transition: var(--tran-03); */
+    /* 没这个过渡，在鼠标快速在这些a标签间移动时悬浮效果会更迅速四海 */
+    background-color: transparent;
+    display: flex;
+    /* 加flex布局默认横向，文字才会和图标icon并行排 */
+    align-items: center;
+}
+
+li a:hover {
+    background-color: var(--primary-color);
+
+}
+
+li a:hover .icon,
+li a:hover .text {
+    color: var(--sidebar-color);
+}
+
+
+
+body.dark li a:hover .icon,
+body.dark li a:hover .text {
+    color: var(--text-color);
+}
+
+.mode {
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    position: relative;
+    transition-timing-function: var(--tran-03);
+    /* ? */
+}
+
+.mode .sun-moon {
+    height: 50px;
+    width: 60px;
+}
+
+.mode .sun-moon i {
+    position: absolute;
+}
+
+.mode .sun-moon .sun {
+    opacity: 0;
+}
+
+body.dark .mode .sun-moon i.sun {
+    opacity: 1;
+}
+
+body.dark .mode .sun-moon i.moon {
+    opacity: 0;
+}
+
+.toggle-switch {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    min-width: 60px;
+    /* ？ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border-radius: 6px; */
+    cursor: pointer;
+}
+
+
+/* 到底哪个是小条哪个是小圆 */
+.toggle-switch .switch {
+    position: relative;
+    height: 22px;
+    width: 40px;
+    border-radius: 25px;
+    transition: var(--tran-03);
+    background-color: var(--toggle-color);
+}
+
+/* 为什么用before */
+.switch::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    top: 50%;
+    /* 50%不应该更向下吗 */
+    left: 5px;
+    transform: translateY(-50%);
+    /*？  */
+    background-color: var(--sidebar-color);
+    transition: var(--tran-03);
+    /* ？ */
+}
+
+body.dark .switch::before {
+    left: 20px;
+}
+
+
+
+
+.home {
+    /* height: 100%;
+    position: absolute; */
+    /*  height: 100%;时不加绝对定位看不见文字text */
+    position: absolute;
+    /* 为什么绝对定位，因为有top和left吗 */
+    height: 100vh;
+    top: 0;
+    display: grid;
+    grid-template-rows: 60px calc(100% - 60px);
+    grid-auto-rows: minmax(0, auto);
+    /* 为什么没有top:0文字会移动位置 */
+    left: 250px;
+    width: calc(100% - 250px);
+    /* 减号-前后一定要有空格 */
+    color: var(--text-color);
+    transition: var(--tran-03);
+    background-color: var(--body-color);
+    overflow-y: auto;
+}
+
+.home .text {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 12px 60px;
+}
+
+
+
+.sidebar-toggle {
+    /* position: absolute; */
+    /* 放.home里用绝对定位就不能重复伸缩，只能缩一回 */
+    display: flex;
+    /* 为什么要flex */
+    align-items: center;
+    justify-content: center;
+    /* 这里是给谁居中 */
+    float: left;
+    margin: 17.5px;
+    /* padding-top: 5px; */
+    /* 感觉没什么用还会影响高度 */
+    /* top: 14px; */
+    transform: rotate(180deg);
+    height: 25px;
+    width: 25px;
+    background-color: var(--primary-color);
+    color: var(--sidebar-color);
+    border-radius: 15%;
+    font-size: 25px;
+    cursor: pointer;
+    transition: var(--tran-03);
+    /* 出现跑位，鼠标悬浮出现pointer的高度不一样 */
+}
+
+body.dark .sidebar-toggle {
+    color: var(--text-color);
+    background-color: var(--body-color);
+}
+
+.header {
+    min-width: 0;
+    /* 响应式网页 */
+    width: 100%;
+    height: 60px;
+    background-color: var(--primary-color-light);
+    position: fixed;
+    /* 加固定定位会影响.content的位置，导致第一个分区名搜索&AI看不见 */
+    z-index: 10;
+    /* 让.header可能覆盖到.content上的.language-switch的语言切换部分保持上层不被遮挡 */
+}
+
+
+/* #to-AI{
+    height: 60px;
+} */
+/* 不设置也可以有效果，因为#to-AI起的作用是回到最顶部的效果，
+ 这样跳转到搜索&AI才不会被遮挡住，之前#to-AI放在.content里时文字会被遮挡住是因为
+ 锚点跳转的原理是跳转到#xx位于页面最顶部位置，#to-AI放在.content里就会导致
+ #to-AI位于同样位于页面顶部的position:fixed的.header的z轴后面，就被遮挡了
+ 改后的#to-AI位于页面顶部就和最一开始没向下滑动过的页面位置一样，搜索&AI就不会被挡 */
+
+/* 最简便的方法就是.sidebar的搜索&AI的a标签href地址直接写成# */
+
+
+.clearfix {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.language {
+    float: left;
+    height: 100%;
+    position: relative;
+    /* 居中 */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.language-switch {
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    box-shadow: 0 2px 8px rgba(0, 1, 1, .05);
+    display: none;
+}
+
+/* 设置当前页面语言默认颜色为悬浮后的深颜色 */
+.cur-language-second {
+    background-color: var(--primary-color-light) !important;
+}
+
+/* dark mode下的当前页面语言的文字color需换色适应黑暗模式的背景色background-color */
+body.dark .cur-language-second .language-text {
+    color: var(--text-color) !important;
+}
+
+
+
+.language img,
+.language-switch img {
+    width: 24px;
+}
+
+.language-switch img {
+    display: flex;
+    align-items: center;
+    margin-left: 6px;
+    /* 两个国旗和边框的间距 */
+}
+
+.language-switch li {
+    list-style: none;
+    padding: 5px;
+    margin-bottom: -1px;
+    background-color: white;
+    font-size: small;
+    color: var(--text-color);
+}
+
+.language-switch li:hover {
+    background-color: var(--primary-color-light);
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+body.dark .language.close .language-text {
+    color: var(--sidebar-color);
+}
+
+body.dark .language-switch li:hover .language-text {
+    color: var(--text-color);
+}
+
+
+.language-text {
+    margin-left: 8px;
+}
+
+.chinese,
+.english {
+    display: flex;
+    /* 使文字居中 */
+    width: 150px;
+    border: 1px solid lightgray;
+}
+
+.cur-language {
+    padding: 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: none;
+    color: var(--text-color);
+
+    /* transition: var(--tran-02); */
+}
+
+.cur-language:hover {
+    /* border: 1px solid lightgray;
+    border-bottom:none; */
+    border-top: 3px solid green;
+    /* color: #18191a;
+    background-color: white; */
+}
+
+.language.close .language-switch {
+    display: block;
+}
+
+.language.close .cur-language {
+    border: 1px solid lightgray;
+    border-bottom: none;
+    border-top: 3px solid green;
+
+    background-color: white;
+}
+
+.content {
+    margin-left: 25px;
+    margin-right: 25px;
+
+    /* 允许垂直滚动 */
+    overflow-y: scroll;
+
+    grid-row-start: 2;
+    /* 从第二行开始 */
+    grid-row-end: 3;
+    /* 占据第二行，这个也可以不写 */
+
+    /* position: absolute; */
+    /* 相对于.home的绝对定位，一般情况，开启了子元素的绝对定位都会同时开启父元素的相对定位 */
+    /* top: 60px;  */
+    /* 用top:60px不能在页面向下滑动时保证.coontent的位置向上 */
+
+    /* position: sticky; */
+    /* top:60px; */
+    /* margin-top: 60px; */
+    /* 预留.home .header 的高度，不然.content的第一个分区名:搜索&AI会被遮挡 */
+    width: calc(100% - 50px);
+    /* 改成padding,width就得改为100% */
+    /* .home的100%宽度再减去.contnet的左右margin的28*2=56px，才是.content的内容宽度（不包括.content的margin） */
+}
+
+/* 隐藏在.content内的滚动条 */
+.content::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 10;
+}
+
+.row .col {
+    width: 25%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.home .content a {
+    position: relative;
+
+    text-decoration: none;
+    color: black;
+    background-color: var(--sidebar-color);
+    /* a标签flex布局 */
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    height: 86px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 18px;
+    margin-bottom: 5px;
+    /* 这样tooltip才不会遮挡到下一行的图img */
+    border: 1px solid rgb(231, 229, 229);
+    transition: var(--tran-03);
+    padding: 15px;
+}
+
+/* 在搜索输入框input查找到后对应的a标签的悬浮效果 */
+.search-hover {
+    box-shadow: 15px 20px 20px -10px rgba(0, 36, 100, 0.5);
+    transform: translateY(-5px);
+    background-color: #b5c0df !important;
+    border: none !important;
+    /* 这两个属性不加!important的话会盖不过本来a标签的background-color和border的样式 */
+}
+
+.home .content a:hover {
+    transform: translateY(-5px);
+    /* 向上位移一点的悬浮效果 */
+    box-shadow: 0 26px 40px -24px rgba(0, 36, 100, 0.3);
+    /* x 偏移量| y 偏移量| 阴影模糊半径| 阴影扩散半径| 阴影颜色 */
+}
+
+.home .content a:hover+.tooltip-container {
+    visibility: visible;
+    opacity: 1;
+    z-index: 10;
+}
+
+.google,
+.bing,
+.chatgpt,
+.tongyi,
+.kimi,
+.wenxin,
+.copilot,
+.you,
+.csdn,
+.runoob,
+.nowcoder,
+.leetcode,
+.github,
+.w3school,
+.cnblogs,
+.mdn,
+.geek,
+.fafu,
+.chaoxing,
+.yuketang,
+.mooc,
+.aliyun,
+.baidu,
+.tencent,
+.quark {
+    position: relative;
+}
+
+.home .content a .img {
+    height: 100%;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.content img {
+    width: 40px;
+    border-radius: 8px;
+}
+
+.content-title {
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: large;
+    margin-top: 30px;
+    margin-left: 15px;
+}
+
+.content-text {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 100%; */
+    font-size: 13px;
+}
+
+.content-text .first {
+    font-weight: 550;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* 实现兼容性 */
+    word-break: break-word;
+    /* 有word-break才不会文字超出外容器 */
+}
+
+.content-text .second {
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* 实现兼容性 */
+    /* margin-right: 15px; */
+    word-break: break-word;
+
+}
+
+body.dark .content-text .first {
+    color: var(--toggle-color);
+}
+
+.tooltip-container {
+    max-width: 80%;
+    visibility: hidden;
+    position: absolute;
+    /* 相对于对应的.col */
+    margin-top: 2px;
+    padding: 8px 15px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    /* 左右水平居中需要 */
+    background-color: rgb(50, 49, 49);
+    color: #fff;
+    font-size: small;
+    border-radius: 6px;
+    text-align: center;
+    /* z-index: 100; */
+    /* 是给父元素设置，不是要设置“上下”的本元素 */
+    opacity: 1;
+    transition: opacity 0.5s;
+
+}
+
+.tooltip {
+    overflow: hidden;
+    /* 溢出隐藏 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
+    word-wrap: break-word;
+    /* 允许单词内断行,一定要有这句还会有两行可以换行 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* 实现兼容性 */
+    /* overflow-x: hidden;
+    text-overflow: ellipsis; */
+
+}
+
+.geek .tooltip {
+    width: max-content;
+    /* 不用max-content的话极客教程的提示文字宽度会出错，
+    /* 文字明明一行可以显示完却显示两行 */
+}
+
+/* 三角形箭头 */
+/* 给.tooltip外多加一个.tooltip-container解决了原本.tooltip的border会分隔小三角形箭头和.tooltip本体 */
+.tooltip-container::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    margin-left: -5px;
+    left: 50%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgb(50, 49, 49) transparent;
+    /* 上右下左 */
+
+}
+
+body.dark .tooltip-container {
+    background-color: var(--text-color);
+    color: var(--body-color);
+}
+
+body.dark .tooltip-container::after {
+    border-color: transparent transparent var(--text-color) transparent;
+}
+
+
+/* 本来是真的一行的col让在一个row里，后面改成一个区域的col都放在一个row里了
+    下面的样式就弃用了，并且发现了解决了tooltip被遮挡的新方法，就不再需要r1,r2父元素设置z-index的方式
+    而且这种方式并不能解决响应式网页变位一行两个或三个col的情况下tooltip被遮挡问题
+*/
+/* .r1{
+    position:relative;
+    设置z-index的元素必须是由定位的（position为absolute、relative、fixed或inhert，有时Inhert继承没用）
+    z-index: 2;
+    z-index值只要比0大都行，是1,100,1000或其他比0大的数都行
+}
+.r2{
+    position:relative;
+    z-index: 1;
+} */
+
+
+/* 为什么不生效——需要结合js动态添加close类 */
+/* @media (max-width:900px) {
+    .sidebar.close{
+        width: 88px;
+    }
+    
+    .sidebar.close .text{
+        opacity: 0;
+    }
+    
+    .sidebar.close+.home {
+        left: 88px;
+        height: 100vh;
+        width: calc(100% - 88px);
+    }
+    
+    .sidebar.close .logo-text {
+        visibility: hidden;
+    }
+    
+    .sidebar.close+.home .sidebar-toggle {
+        transform: rotate(0deg);
+    }
+} */
+
+
+/* 用这个会导致在反复变宽度时如.sidebar的.close类名没对应正确存在时刻 
+就间接导致点toggle时有时没办法成功开闭.sidebar */
+/* @media screen and (max-width: 1100px) {
+    .sidebar{
+        width: 88px;
+    }
+    
+    .sidebar .text{
+        opacity: 0;
+    }
+    
+    .sidebar+.home {
+        left: 88px;
+        height: 100vh;
+        width: calc(100% - 88px);
+    }
+    
+    .sidebar .logo-text {
+        visibility: hidden;
+    }
+    
+    .sidebar+.home .sidebar-toggle {
+        transform: rotate(0deg);
+    }
+    
+    .row .col{
+        width: 33.3333% ;
+    } 
+}
+
+
+@media screen and (max-width: 768px) {
+    .sidebar{
+        display: none;
+    }
+    
+    .home{
+        width: 100% !important;
+        left: 0 !important;
+        top: 0 !important;
+        height: 100% !important;
+    }
+    
+    .row .col {
+        width: 50%;
+    }
+} */
