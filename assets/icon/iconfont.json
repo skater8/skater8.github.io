@@ -1,0 +1,37 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "493480",
+      "name": "相机",
+      "font_class": "xiangji",
+      "unicode": "e7a7",
+      "unicode_decimal": 59303
+    },
+    {
+      "icon_id": "9305753",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e80b",
+      "unicode_decimal": 59403
+    },
+    {
+      "icon_id": "11519538",
+      "name": "麦克风",
+      "font_class": "maikefeng",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
+      "icon_id": "18418400",
+      "name": "icon_arrow_right",
+      "font_class": "icon_arrow_right",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    }
+  ]
+}
