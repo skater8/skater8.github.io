@@ -537,7 +537,6 @@ body.dark .language-switch li:hover .language-text {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    z-index: 10;
 }
 
 .row .col {
@@ -584,10 +583,9 @@ body.dark .language-switch li:hover .language-text {
     /* x 偏移量| y 偏移量| 阴影模糊半径| 阴影扩散半径| 阴影颜色 */
 }
 
-.home .content a:hover+.tooltip-container {
+.home .content a:hover+.tooltip-container{
     visibility: visible;
     opacity: 1;
-    z-index: 10;
 }
 
 .google,
@@ -614,7 +612,13 @@ body.dark .language-switch li:hover .language-text {
 .aliyun,
 .baidu,
 .tencent,
-.quark {
+.quark,
+.bili,
+.zhihu,
+.xiezuo,
+.cnki,
+.cnki-tran,
+.deepl {
     position: relative;
 }
 
@@ -695,8 +699,8 @@ body.dark .content-text .first {
     font-size: small;
     border-radius: 6px;
     text-align: center;
-    /* z-index: 100; */
-    /* 是给父元素设置，不是要设置“上下”的本元素 */
+    z-index: 10;
+    /* 给tooltip容器设置z-index就可以不被遮挡了 */
     opacity: 1;
     transition: opacity 0.5s;
 
@@ -708,7 +712,7 @@ body.dark .content-text .first {
     text-overflow: ellipsis;
     /* 显示省略号 */
     word-wrap: break-word;
-    /* 允许单词内断行,一定要有这句还会有两行可以换行 */
+    /* 允许单词内断行,一定要有这句才会有两行，可以换行 */
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
