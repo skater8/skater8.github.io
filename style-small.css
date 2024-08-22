@@ -62,5 +62,5 @@
 /* 为了排版搜索&AI不会被遮挡 */
 
 .row .col.small-screen{
-    width: 50%;
+    width: 100%;
 }
