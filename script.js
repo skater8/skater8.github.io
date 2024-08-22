@@ -35,6 +35,12 @@ const tongyi = document.getElementById("tongyi")
 const bing = document.getElementById("bing")
 const kimi = document.getElementById("kimi")
 const csdn = document.getElementById("csdn")
+const bili = document.getElementById("bili")
+const zhihu = document.getElementById("zhihu")
+const cnki = document.getElementById("cnki")
+const xiezuo = document.getElementById("xiezuo")
+const deepl = document.getElementById("deepl")
+
 
 var regex_fafu = /.*农.*/;
 var regex_chaoxing = /.*(学).*/;
@@ -48,6 +54,11 @@ var regex_tongyi = /.*(通).*/;
 var regex_bing = /.*(必).*/;
 var regex_kimi = /.*(k).*/;
 var regex_csdn = /.*(c).*/;
+var regex_bili = /.*(b).*/;
+var regex_zhihu = /.*(知乎).*/;
+var regex_cnki = /.*(知网).*/;
+var regex_xiezuo = /.*(写).*/;
+var regex_deepl = /.*(de).*/;
 
 
 toggle.addEventListener('click', () => {
@@ -133,6 +144,51 @@ search.addEventListener('keydown', function (e) {
             mooc.classList.add('search-hover');
             setTimeout(function () {
                 mooc.classList.remove('search-hover');
+            }, 2000);
+        }
+        else if (regex_bili.test(value)) {
+            var link = document.createElement('a');
+            link.href = '#to-school';
+            link.click();
+            bili.classList.add('search-hover');
+            setTimeout(function () {
+                bili.classList.remove('search-hover');
+            }, 2000);
+        }
+        else if (regex_zhihu.test(value)) {
+            var link = document.createElement('a');
+            link.href = '#to-school';
+            link.click();
+            zhihu.classList.add('search-hover');
+            setTimeout(function () {
+                zhihu.classList.remove('search-hover');
+            }, 2000);
+        }
+        else if (regex_cnki.test(value)) {
+            var link = document.createElement('a');
+            link.href = '#to-school';
+            link.click();
+            cnki.classList.add('search-hover');
+            setTimeout(function () {
+                cnki.classList.remove('search-hover');
+            }, 2000);
+        }
+        else if (regex_xiezuo.test(value)) {
+            var link = document.createElement('a');
+            link.href = '#to-school';
+            link.click();
+            xiezuo.classList.add('search-hover');
+            setTimeout(function () {
+                xiezuo.classList.remove('search-hover');
+            }, 2000);
+        }
+        else if (regex_deepl.test(value)) {
+            var link = document.createElement('a');
+            link.href = '#to-school';
+            link.click();
+            deepl.classList.add('search-hover');
+            setTimeout(function () {
+                deepl.classList.remove('search-hover');
             }, 2000);
         }
         else if (regex_aliyun.test(value)) {
