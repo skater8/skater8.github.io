@@ -364,3 +364,29 @@ window.addEventListener('resize',()=>{
 })
 
 window.dispatchEvent(new Event('resize'));
+
+
+
+
+// 使用web API实现图片懒加载
+document.addEventListener("DOMContentLoaded", function () {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const imgContainer = entry.target;
+                const imgSrc = imgContainer.getAttribute('data-src');
+                imgContainer.src = imgSrc;
+
+                observer.unobserve(imgContainer);
+            }
+        });
+    }, {
+        rootMargin: '0px',
+        threshold: 0.1 // 当元素出现在视口中的比例超过10%时触发
+    });
+
+    // 观察所有需要懒加载的图片容器
+    const images = document.querySelectorAll('img[data-src]');
+    images.forEach(image => observer.observe(image));
+});
+
